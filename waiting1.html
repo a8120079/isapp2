@@ -7,17 +7,15 @@
 
     <script type="text/javascript" src="../jquery.min.js"></script>
     <script type="text/javascript" src="../osql.js"></script>
-    <script type="text/javascript" src="../style.css"></script>
 
     <script>
         osql.requirelogin();
 
-        
         $(document).ready(function () {
             showGametable();
         });
 
-        async function showGametable() {
+        async function showGametable(){
             var sql = 'select * from Games';
             var objects = await osql.connect(sql);
             console.log(objects);
@@ -34,22 +32,17 @@
             }
             html = html + '</table>';
             document.getElementById('result').innerHTML = html;
-        function getPlayers(){
-            var me = await osql.getMe();
-            console.log(me);
-            var sql = `insert into Players (id, name) VALUES (${me.id}, "${me.name}")`;
+        }
+
+        async function ParticipateGame(target) {
             await osql.connect(sql);
         }
 
-        function buttonPressed(){
-            getPlayers();
-        }
-
-        function buttonDelPressed(target) {
+        function buttonPartPressed(target) {
             var ans = window.confirm(`本当に ${target} に参加しますか？`);
             if(ans == true){
                 console.log(target);
-                execDelete(target);
+                ParticipateGame(target);
             }
             execSelect();
         }
@@ -57,53 +50,7 @@
             var name = document.getElementById('name').value;
             var sql = `insert into Game (turn, name) VALUES (1, "${name}")`;
             await osql.connect(sql);
-        }
-
-        
-
-        
-
-        // $(document).ready(function () {
-        //     showGametable();
-        // });
-
-        // async function showGametable() {
-        //     var sql = 'select * from Games';
-        //     var objects = await osql.connect(sql);
-        //     console.log(objects);
-        //     var html = '';
-        //     html = html + '<table border="1">';
-        //     for (var i = 0; i < objects.length; i++) {
-        //         html = html + '<tr>';
-        //         var object = objects[i];
-        //         html = html + '<td>' + object.id + '</td>';
-        //         html = html + '<td>' + object.name + '</td>';
-        //         // html = html + '<td>' + '<a href="game.html?userid=' + object.id + '">参加</a>' + '</td>';
-        //         html = html + '<td>' + '<button id=' + i + ' type="button" value=' + object.id + ' onclick="buttonPartPressed(this.value)">消去</button>' + '</td>';
-        //         html = html + '</tr>';
-        //     }
-        //     html = html + '</table>';
-        //     document.getElementById('result').innerHTML = html;
-        // }
-
-        // async function execDelete(target) {
-        //     var sql = `delete from Users where id = "${target}"`;
-        //     await osql.connect(sql);
-        // }
-
-        // function buttonDelPressed(target) {
-        //     var ans = window.confirm(`本当に ${target} に参加しますか？`);
-        //     if(ans == true){
-        //         console.log(target);
-        //         execDelete(target);
-        //     }
-        //     execSelect();
-        // }
-        // async function buttonPressed() {
-        //     var name = document.getElementById('name').value;
-        //     var sql = `insert into Game (turn, name) VALUES (1, "${name}")`;
-        //     await osql.connect(sql);
-        //     // if (objects.length <= 0) {
+            // if (objects.length <= 0) {
             //     document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
             //     return;
             // }
@@ -116,7 +63,7 @@
             // sessionStorage.setItem('username', objects[0].name);
 
             // location.href = 'usertop.html';
-        
+        }
     </script>
 
 </head>
@@ -124,11 +71,11 @@
 <body>
     <h1>山手線ゲーム</h1>
     <div>
-        <!-- <h2>ネーム、テーマ作成</h2>
+        <h2>ネーム、テーマ作成</h2>
             name(4to8characters):<input id="name" value="" type="text" equired
             minlength="4" maxlength="8" size="10"><br>
         </form>
-        <br> -->
+        <br>
         <button onclick="buttonPressed()">作成</button>
         <p id="result"></p>
     </div>
