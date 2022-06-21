@@ -6,30 +6,46 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript" src="../jquery.min.js"></script>
-    <script type="text/javascript" src="../settings.js"></script>
     <script type="text/javascript" src="../osql.js"></script>
 
     <script>
-        async function buttonPressed() {
-            var theme = document.getElementById('theme').value;
+        osql.requirelogin();
 
-            var sql = `create table Game (id ) from Users where id="${userid}";`;
+        $(document).ready(function () {
+            showGametable();
+        });
 
-            var sql = `select * from Users where id="${userid}";`;
+        async function showGametable() {
+            var sql = 'select * from Games';
             var objects = await osql.connect(sql);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
-                return;
+            console.log(objects);
+            var html = '';
+            html = html + '<table border="1">';
+            for (var i = 0; i < objects.length; i++) {
+                html = html + '<tr>';
+                var object = objects[i];
+                html = html + '<td>' + object.id + '</td>';
+                html = html + '<td>' + object.name + '</td>';
+                // html = html + '<td>' + '<a href="game.html?userid=' + object.id + '">参加</a>' + '</td>';
+                html = html + '<td>' + '<button id=' + i + ' type="button" value=' + object.id + ' onclick="buttonPartPressed(this.value)">消去</button>' + '</td>';
+                html = html + '</tr>';
             }
-            if (objects[0].password != password) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
-                return;
+            html = html + '</table>';
+            document.getElementById('result').innerHTML = html;
+        }
+
+        async function execDelete(target) {
+            var sql = `delete from Users where id = "${target}"`;
+            await osql.connect(sql);
+        }
+
+        function buttonDelPressed(target) {
+            var ans = window.confirm(`本当に ${target} に参加しますか？`);
+            if(ans == true){
+                console.log(target);
+                execDelete(target);
             }
-
-            sessionStorage.setItem('userid', objects[0].id);
-            sessionStorage.setItem('username', objects[0].name);
-
-            location.href = 'usertop.html';
+            execSelect();
         }
     </script>
 
@@ -46,7 +62,7 @@
     </div>
     <hr>
     <h2>グループ一覧</h2>
-    <p><a href="register.html">新規登録</a></p>
+    <p><a href="register.html"></a></p>
     <hr>
     <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
 </body>
