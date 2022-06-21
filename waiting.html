@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="../jquery.min.js"></script>
+    <script type="text/javascript" src="../settings.js"></script>
+    <script type="text/javascript" src="../osql.js"></script>
+
+    <script>
+        async function buttonPressed() {
+            var theme = document.getElementById('theme').value;
+
+            var sql = `create table Game (id ) from Users where id="${userid}";`;
+
+            var sql = `select * from Users where id="${userid}";`;
+            var objects = await osql.connect(sql);
+            if (objects.length <= 0) {
+                document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
+                return;
+            }
+            if (objects[0].password != password) {
+                document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
+                return;
+            }
+
+            sessionStorage.setItem('userid', objects[0].id);
+            sessionStorage.setItem('username', objects[0].name);
+
+            location.href = 'usertop.html';
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>山手線ゲーム</h1>
+    <div>
+        <h2>グループ作成</h2>
+        テーマ<input id="theme" value="" type="text">
+        <br>
+        <button onclick="buttonPressed()">作成</button>
+        <p id="result"></p>
+    </div>
+    <hr>
+    <h2>グループ一覧</h2>
+    <p><a href="register.html">新規登録</a></p>
+    <hr>
+    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
+</body>
+
+</html>
