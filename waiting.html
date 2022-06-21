@@ -6,30 +6,26 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript" src="../jquery.min.js"></script>
-    <script type="text/javascript" src="../settings.js"></script>
     <script type="text/javascript" src="../osql.js"></script>
 
     <script>
         async function buttonPressed() {
-            var theme = document.getElementById('theme').value;
+            var name = document.getElementById('name').value;
+            var sql = `insert into Game (turn, name) VALUES (1, "${name}")`;
+            await osql.connect(sql);
+            // if (objects.length <= 0) {
+            //     document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
+            //     return;
+            // }
+            // if (objects[0].password != password) {
+            //     document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
+            //     return;
+            // }
 
-            var sql = `create table Game (id ) from Users where id="${userid}";`;
+            // sessionStorage.setItem('userid', objects[0].id);
+            // sessionStorage.setItem('username', objects[0].name);
 
-            var sql = `select * from Users where id="${userid}";`;
-            var objects = await osql.connect(sql);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
-                return;
-            }
-            if (objects[0].password != password) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
-                return;
-            }
-
-            sessionStorage.setItem('userid', objects[0].id);
-            sessionStorage.setItem('username', objects[0].name);
-
-            location.href = 'usertop.html';
+            // location.href = 'usertop.html';
         }
     </script>
 
@@ -38,8 +34,10 @@
 <body>
     <h1>山手線ゲーム</h1>
     <div>
-        <h2>グループ作成</h2>
-        テーマ<input id="theme" value="" type="text">
+        <h2>ネーム、テーマ作成</h2>
+            name(4to8characters):<input id="name" value="" type="text" equired
+            minlength="4" maxlength="8" size="10"><br>
+        </form>
         <br>
         <button onclick="buttonPressed()">作成</button>
         <p id="result"></p>
