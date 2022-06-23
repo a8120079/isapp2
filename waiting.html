@@ -16,7 +16,7 @@
             console.log(me);
             var sql = `insert into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
             await osql.connect(sql);
-            document.getElementById(status) = "他の参加者を待っています。"
+            document.getElementById('status').html = "他の参加者を待っています。"
         }
     </script>
 
