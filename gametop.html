@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+
+    <script>
+        osql.requireLogin();
+
+        async function buttonPressed(){
+            var me = await osql.getMe();
+            console.log(me);
+            var sql = `insert into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
+            await osql.connect(sql);
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>山手線ゲーム</h1>
+    <div>
+        <!-- <h2>ネーム、テーマ作成</h2>
+            name(4to8characters):<input id="name" value="" type="text" equired
+            minlength="4" maxlength="8" size="10"><br>
+        </form>
+        <br> -->
+        <button onclick="buttonPressed()">参加</button>
+        <p id="result"></p>
+    </div>
+    <p id="status">---</p>
+    <h3>参加者</h3>
+    <ul>
+        <ol>---</ol>
+    </ul>
+</body>
+
+</html>
