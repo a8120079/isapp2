@@ -13,9 +13,9 @@
         osql.requirelogin();
 
         
-        $(document).ready(function () {
-            showGametable();
-        });
+        // $(document).ready(function () {
+        //     showGametable();
+        // });
 
         // async function showGametable() {
         //     var sql = 'select * from Games';
@@ -34,16 +34,16 @@
         //     }
         //     html = html + '</table>';
         //     document.getElementById('result').innerHTML = html;
-        // function getPlayers(){
-        //     var me = await osql.getMe();
-        //     console.log(me);
-        //     var sql = `insert into Players (id, name) VALUES (${me.id}, "${me.name}")`;
-        //     await osql.connect(sql);
-        // }
+        function getPlayers(){
+            var me = await osql.getMe();
+            console.log(me);
+            var sql = `insert into Players (id, name) VALUES (${me.id}, "${me.name}")`;
+            await osql.connect(sql);
+        }
 
-        // function buttonPressed(){
-        //     getPlayers();
-        // }
+        function buttonPressed(){
+            getPlayers();
+        }
 
         // function buttonDelPressed(target) {
         //     var ans = window.confirm(`本当に ${target} に参加しますか？`);
