@@ -11,12 +11,12 @@
     <script>
         osql.requireLogin();
 
-
         async function buttonPressed(){
             var me = await osql.getMe();
             console.log(me);
             var sql = `insert into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
             await osql.connect(sql);
+            document.getElementById(status) = "他の参加者を待っています。"
         }
     </script>
 
@@ -30,14 +30,14 @@
             minlength="4" maxlength="8" size="10"><br>
         </form>
         <br> -->
-        <button onclick="buttonPressed()">作成</button>
+        <button onclick="buttonPressed()">参加</button>
         <p id="result"></p>
     </div>
-    <!-- <hr>
-    <h2>グループ一覧</h2>
-    <p><a href="register.html"></a></p>
-    <hr>
-    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p> -->
+    <p id="status">---</p>
+    <h3>参加者</h3>
+    <ul>
+        <ol>---</ol>
+    </ul>
 </body>
 
 </html>
