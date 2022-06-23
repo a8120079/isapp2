@@ -11,12 +11,16 @@
     <script>
         osql.requireLogin();
 
-        async function buttonPressed(){
+        $().ready(function () {
+            setInterval(LoginGame, 2000);
+        });
+
+        async function LoginGame(){
             var me = await osql.getMe();
             console.log(me);
             var sql = `insert ignore into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
+            // primary keyを設定して、重複を防ぐ
             await osql.connect(sql);
-            
         }
     </script>
 
@@ -30,9 +34,13 @@
             minlength="4" maxlength="8" size="10"><br>
         </form>
         <br> -->
-        <button onclick="buttonPressed()">ログイン</button>
         <p id="result"></p>
-        <a href="waiting.html">参加する</a>
+        <ul>
+            <ol><a href="waiting.html">ゲーム1:参加する</a></ol> 
+            <!-- sessionとかでゲーム番号所得したい？ -->
+            <!-- <ol><a href="waiting.html">ゲーム2:参加する</a></ol> -->
+        </ul>
+        
     </div>
 </body>
 

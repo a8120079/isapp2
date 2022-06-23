@@ -10,7 +10,14 @@
 
     <script>
         osql.requirelogin();
+        var sql = `select * from Game where id = 1`;
+        var currentOrder = await osql.connect(sql);
+        var sql2 = `select * from PlayersGame where id = ${me.id}`;
+        var myOrder = await osql.connect(sql2);
+        if(){
 
+        }
+        
 
     </script>
 

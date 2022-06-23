@@ -12,11 +12,20 @@
         osql.requireLogin();
 
         $().ready(function () {
+            participate();
             setInterval(showParticipants, 2000);
         });
 
+        async function participate() {
+            var me = await osql.getMe();
+            var sql = `insert ignore into PlayersGame (playerid, gameid, ord) VALUES ('${me.id}', 1)'`;// プレイヤーから、ゲームに参加するプレイヤーを作成
+            await osql.connect(sql);
+            var sql3 = `update Game set playernum = playernum + 1 where id = 1;`;
+        }
+        
+
         async function showParticipants() {
-            var sql = 'select * from Players';
+            var sql = 'select * from PlayersGame where gameid = 1';
             var objects = await osql.connect(sql);
             var html = '';
             html = html + '<table border="1">';
@@ -35,11 +44,11 @@
 </head>
 
 <body>
-    <h1>ゲーム参加者待機中</h1>
+    <h1>ゲーム1参加者待機中</h1>
     <h3>参加者</h3>
     
     <div>
-        <button onclick="buttonPressed()">ゲームスタート</button>
+        <a href="game1.html">ゲームスタート</a>
         <p id="result"></p>
     </div>
     
