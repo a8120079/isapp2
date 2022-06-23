@@ -4,9 +4,9 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/osql.js"></script>
+
 
     <script>
         osql.requireLogin();
@@ -18,8 +18,7 @@
             var sql = `insert into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
             await osql.connect(sql);
         }
-  
-     </script>
+    </script>
 
 </head>
 
@@ -34,11 +33,11 @@
         <button onclick="buttonPressed()">作成</button>
         <p id="result"></p>
     </div>
-    <hr>
+    <!-- <hr>
     <h2>グループ一覧</h2>
     <p><a href="register.html"></a></p>
     <hr>
-    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
+    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p> -->
 </body>
 
 </html>
