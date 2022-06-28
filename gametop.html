@@ -12,12 +12,13 @@
         osql.requireLogin();
 
         $().ready(function () {
-            setInterval(LoginGame, 2000);
+            LoginGame();
         });
 
         async function LoginGame(){
             var me = await osql.getMe();
             console.log(me);
+            console.log(me.id)
             var sql = `insert ignore into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
             // primary keyを設定して、重複を防ぐ
             await osql.connect(sql);

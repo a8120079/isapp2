@@ -18,22 +18,23 @@
 
         async function participate() {
             var me = await osql.getMe();
-            var sql = `insert ignore into PlayersGame (playerid, gameid, ord) VALUES ('${me.id}', 1)'`;// プレイヤーから、ゲームに参加するプレイヤーを作成
+            var sql = `insert ignore into Gameplayer (playerid, gameid) VALUES ('${me.id}', 1)`;// Gameid = session.
             await osql.connect(sql);
-            var sql3 = `update Game set playernum = playernum + 1 where id = 1;`;
+            var sql3 = `update Game set playernum = playernum + 1 where id = 1;`;// where id = session.
+            await osql.connect(sql3);
         }
         
 
         async function showParticipants() {
-            var sql = 'select * from PlayersGame where gameid = 1';
-            var objects = await osql.connect(sql);
+            var sqlre = 'select * from Gameplayer where gameid = 1'; //gameid = session
+            var objects = await osql.connect(sqlre);
             var html = '';
             html = html + '<table border="1">';
             for (var i = 0; i < objects.length; i++) {
                 html = html + '<tr>';
                 var object = objects[i];
-                html = html + '<td>' + object.id + '</td>';
-                html = html + '<td>' + object.name + '</td>';
+                html = html + '<td>' + object.ord + '</td>';
+                html = html + '<td>' + object.playerid + '</td>';
                 html = html + '</tr>';
             }
             html = html + '</table>';

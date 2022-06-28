@@ -5,19 +5,74 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <script type="text/javascript" src="../jquery.min.js"></script>
-    <script type="text/javascript" src="../osql.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
 
     <script>
-        osql.requirelogin();
-        var sql = `select * from Game where id = 1`;
-        var currentOrder = await osql.connect(sql);
-        var sql2 = `select * from PlayersGame where id = ${me.id}`;
-        var myOrder = await osql.connect(sql2);
-        if(){
+        // alter table Gameplayer auto_increment = 1; AIの初期化
 
-        }
+        osql.requireLogin();
         
+
+        $().ready(function () {
+            setInterval(moveOn, 2000);
+        });
+
+        async function moveOn() {
+            var me = await osql.getMe();
+            var sql = `select * from Game where id = 1`; // id = session
+            var Game = await osql.connect(sql);
+            var sql2 = `select * from Gameplayer where playerid = '${me.id}'`;
+            var Gameplayer = await osql.connect(sql2);
+
+            var currentTurn = (Game['0']['turn'] % Game['0']['playernum']) + 1; // 今の順番
+            var myTurn = Gameplayer['0']['ord'] // あなたの順番
+
+            whoseTurn(currentTurn ,myTurn)
+        }
+
+        async function whoseTurn(currentTurn, myTurn) {
+            if (currentTurn == myTurn) {
+                // 回答を記入
+                document.getElementById("go!").disabled = false;
+                document.getElementById("result").innerHTML = "あなたの番です";
+                document.getElementById("table").innerHTML = "----";
+                return
+
+            } else if (currentTurn != myTurn) {
+
+                //　待つ
+                document.getElementById("go!").disabled = true;
+                document.getElementById("result").innerHTML = "順番待ちです";
+
+                var sql4 = `select * from Items where gameid = 1` // gameid = session.
+                var objects = await osql.connect(sql4);
+
+                var html = '';
+                html = html + '<table border="1">';
+                for (var i = 0; i < objects.length; i++) {
+                    html = html + '<tr>';
+                    var object = objects[i];
+                    html = html + '<td>' + object.order_id + '</td>';
+                    html = html + '<td>' + object.context + '</td>';
+                    html = html + '</tr>';
+                }
+                html = html + '</table>';
+
+                document.getElementById("table").innerHTML = html;
+                return
+            }
+        }
+
+        async function buttonPressed() {
+            var item = document.getElementById("item").value;
+            var sql3 = `insert into Items (gameid, context) VALUES (1, '${item}')`;
+            var currentItem = await osql.connect(sql3);
+            var sqlUpdateTurn = `update Game set turn = turn + 1 where id = 1;`;// gameid = session.
+            await osql.connect(sqlUpdateTurn);
+            return currentItem;
+        }
+
 
     </script>
 
@@ -28,9 +83,11 @@
     <div>
         <!-- <h2>ネーム、テーマ作成</h2> -->
         <input id="item" value="" type="text">
-        <button onclick="buttonPressed()">入力</button>
-        <p id="result"></p>
+        <button id="go!" onclick="buttonPressed()">Go!</button>
+        <hr>
+        <p id="result">----</p>
     </div>
+    <div id="table"></div>
     <!-- <hr>
     <h2>グループ一覧</h2>
     <p><a href="register.html"></a></p>
