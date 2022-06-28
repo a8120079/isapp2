@@ -13,7 +13,20 @@
 
         $().ready(function () {
             LoginGame();
+            showGames();
+            setInterval(showGames, 2000);
         });
+
+        async function showGames(){
+            var select = document.getElementById("RoomList");
+            select.innerHTML = '';
+            var sql2 = `SELECT * FROM Game;`
+            var games = await osql.connect(sql2);
+            for(var i = 1; i < games.length; i++){
+                var game = games[i];
+                addOption(game.name, game.id);
+            }
+        }
 
         async function LoginGame() {
             var me = await osql.getMe();
@@ -23,36 +36,32 @@
         }
 
         function buttonGoPressed() {
-            var room = document.getElementById("RoomList").value;
-            sessionStorage.setItem('room', room);
-            location.href = 'waiting.html';
+            let game = document.getElementById("RoonList").value;
+            location.href = `waiting.html?id=${game}`;
         }
 
-        function buttonpressed() {
+        async function buttonpressed() {
             var name = document.getElementById("roomname").value;
-            CreateGame(name);
-            location.href = 'gametop.html';
+            await CreateGame(name);
         }
 
         async function CreateGame(roomname) {
-            var sql = `insert ignore into Game (turn, playernum) VALUES (0, 0)`;
+            var sql = `insert into Game (name, turn, playernum) VALUES ('${roomname}', 0, 0)`;
             await osql.connect(sql);
-            var sql = `select * from Game (turn, playernum) VALUES (0, 0)`;
-            await osql.connect(sql);
-            addOption(roomname)
         }
 
-        function addOption(roomname) {
+        function addOption(name, id) {
                 // selectタグを取得する
-                var select = document.getElementById("RoomList");
+                var Select = document.getElementById("RoomList");
+                // var length = Select.length;
                 // optionタグを作成する
                 var option = document.createElement("option");
                 // optionタグのテキストを4に設定する
-                option.text = roomname;
+                option.text = name;
                 // optionタグのvalueを4に設定する
-                option.value = roomname;
+                option.value = id;
                 // selectタグの子要素にoptionタグを追加する
-                select.appendChild(option);
+                Select.appendChild(option);
             }
     </script>
 
@@ -68,7 +77,7 @@
         <br> -->
         <p id="result"></p>
         <select name="rooms" size="4" id="RoomList">
-            <option value="room1">Room1</option>
+            <!-- <option value="room1">Room1</option> -->
         </select>
         <button id="goToRoom" onclick="buttonGoPressed()">Go!</button>
         <!-- <ul>

@@ -15,12 +15,17 @@
 
 
         $().ready(function () {
+            init();
             setInterval(moveOn, 2000);
         });
 
+        function init(){
+            var id = osql.getParam('id');
+        }
+
         async function moveOn() {
             var me = await osql.getMe();
-            var sql = `select * from Game where id = 1`; // id = session
+            var sql = `select * from Game where id = ${id}`; // id = session
             var Game = await osql.connect(sql);
             var sql2 = `select * from Gameplayer where playerid = '${me.id}'`;
             var Gameplayer = await osql.connect(sql2);
@@ -45,7 +50,7 @@
                 document.getElementById("go!").disabled = true;
                 document.getElementById("result").innerHTML = "順番待ちです";
 
-                var sql4 = `select * from Items where gameid = 1` // gameid = session.
+                var sql4 = `select * from Items where gameid = ${id}` // gameid = session.
                 var objects = await osql.connect(sql4);
 
                 var html = '';
@@ -68,23 +73,23 @@
             var item = document.getElementById("item").value;
             var sql3 = `insert into Items (gameid, context) VALUES (1, '${item}')`;
             var currentItem = await osql.connect(sql3);
-            var sqlUpdateTurn = `update Game set turn = turn + 1 where id = 1;`;// gameid = session.
+            var sqlUpdateTurn = `update Game set turn = turn + 1 where id = ${id};`;// gameid = session.
             await osql.connect(sqlUpdateTurn);
             return currentItem;
         }
 
         async function buttonleavePressed() {
-            sqlLeaveStuff1 = `delete from Gameplayer where gameid = 1;`
+            sqlLeaveStuff1 = `delete from Gameplayer where gameid = ${id};`
             await osql.connect(sqlLeaveStuff1);
-            sqlLeaveStuff2 = `delete from Items where gameid = 1;`
+            sqlLeaveStuff2 = `delete from Items where gameid = ${id};`
             await osql.connect(sqlLeaveStuff2);
             sqlLeaveStuff3 = `alter table Items auto_increment = 1;`
             await osql.connect(sqlLeaveStuff3);
             sqlLeaveStuff4 = `alter table Gameplayer auto_increment = 1;`
             await osql.connect(sqlLeaveStuff4);
-            sqlLeaveStuff5 = `update Game set playernum = 0 where id = 1;`
+            sqlLeaveStuff5 = `update Game set playernum = 0 where id = ${id};`
             await osql.connect(sqlLeaveStuff5);
-            sqlLeaveStuff6 = `update Game set turn = 0 where id = 1;`
+            sqlLeaveStuff6 = `update Game set turn = 0 where id = ${id};`
             await osql.connect(sqlLeaveStuff6);
             location.href = 'gametop.html';
         }
