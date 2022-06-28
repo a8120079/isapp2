@@ -17,11 +17,15 @@
 
         async function LoginGame(){
             var me = await osql.getMe();
-            console.log(me);
-            console.log(me.id)
             var sql = `insert ignore into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
             // primary keyを設定して、重複を防ぐ
             await osql.connect(sql);
+        }
+
+        function buttonGoPressed() {
+            var name = document.getElementById('tf1').value;
+            sessionStorage.setItem('name', name);
+            location.href = 'ex6-2-to.html';
         }
     </script>
 
@@ -36,6 +40,13 @@
         </form>
         <br> -->
         <p id="result"></p>
+        <select name="rooms" size="4" id="RoomList">
+            <option value="room1">Room1</option>
+            <option value="room2">Room2</option>
+            <option value="room3">Room3</option>
+            <option value="room4">Room4</option>
+        </select>
+        <button id="goToRoom" onclick="buttonGoPressed()">Go!</button>
         <ul>
             <ol><a href="waiting.html">ゲーム1:参加する</a></ol> 
             <!-- sessionとかでゲーム番号所得したい？ -->
