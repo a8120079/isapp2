@@ -12,15 +12,27 @@
         osql.requireLogin();
 
         function buttonPressed() {
-            
+
             var name = document.getElementById("roomname").value;
             CreateGame(name);
         }
 
-        async function CreateGame(roomname){
+        async function CreateGame(roomname) {
             var me = await osql.getMe();
-        
+
             var sql = `insert ignore into Game (turn, playernum) VALUES (0, 0)`;
+            function addOption() {
+                // selectタグを取得する
+                var select = document.getElementById("sampleSelect");
+                // optionタグを作成する
+                var option = document.createElement("option");
+                // optionタグのテキストを4に設定する
+                option.text = 4;
+                // optionタグのvalueを4に設定する
+                option.value = 4;
+                // selectタグの子要素にoptionタグを追加する
+                select.appendChild(option);
+            }
             // primary keyを設定して、重複を防ぐ
             await osql.connect(sql);
         }
@@ -40,11 +52,11 @@
         <input id="roomname" value="" type="text">
         <button id="a" onclick="buttonpressed()"></button>
         <ul>
-            <ol><a href="waiting.html">ゲーム1:参加する</a></ol> 
+            <ol><a href="waiting.html">ゲーム1:参加する</a></ol>
             <!-- sessionとかでゲーム番号所得したい？ -->
             <!-- <ol><a href="waiting.html">ゲーム2:参加する</a></ol> -->
         </ul>
-        
+
     </div>
 </body>
 

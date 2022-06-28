@@ -22,6 +22,8 @@
             await osql.connect(sql);
             var sql3 = `update Game set playernum = playernum + 1 where id = 1;`;// where id = session.
             await osql.connect(sql3);
+            var name = sessionStorage.getItem('name');
+            document.getElementById('roomname').innerHTML = name;
         }
         
 

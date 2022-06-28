@@ -12,7 +12,7 @@
         // alter table Gameplayer auto_increment = 1; AIの初期化
 
         osql.requireLogin();
-        
+
 
         $().ready(function () {
             setInterval(moveOn, 2000);
@@ -28,7 +28,7 @@
             var currentTurn = (Game['0']['turn'] % Game['0']['playernum']) + 1; // 今の順番
             var myTurn = Gameplayer['0']['ord'] // あなたの順番
 
-            whoseTurn(currentTurn ,myTurn)
+            whoseTurn(currentTurn, myTurn)
         }
 
         async function whoseTurn(currentTurn, myTurn) {
@@ -73,7 +73,22 @@
             return currentItem;
         }
 
-        
+        async function buttonleavePressed() {
+            sqlLeaveStuff1 = `delete from Gameplayer where gameid = 1;`
+            await osql.connect(sqlLeaveStuff1);
+            sqlLeaveStuff2 = `delete from Items where gameid = 1;`
+            await osql.connect(sqlLeaveStuff2);
+            // sqlLeaveStuff3 = `delete from Items where gameid = 1;`
+            // await osql.connect(sqlLeaveStuff3);
+            sqlLeaveStuff4 = `alter table Gameplayer auto_increment = 1;`
+            await osql.connect(sqlLeaveStuff4);
+            sqlLeaveStuff5 = `update Game set playernum = 0 where id = 1;`
+            await osql.connect(sqlLeaveStuff5);
+            sqlLeaveStuff6 = `update Game set turn = 0 where id = 1;`
+            await osql.connect(sqlLeaveStuff6);
+        }
+
+
 
 
     </script>
@@ -90,6 +105,8 @@
         <p id="result">----</p>
     </div>
     <div id="table"></div>
+    <hr>
+    <button id="bye!" onclick="buttonleavePressed()">退出</button>
     <!-- <hr>
     <h2>グループ一覧</h2>
     <p><a href="register.html"></a></p>

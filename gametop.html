@@ -15,7 +15,7 @@
             LoginGame();
         });
 
-        async function LoginGame(){
+        async function LoginGame() {
             var me = await osql.getMe();
             var sql = `insert ignore into Players (id, name) VALUES ('${me.id}', "${me.fname}")`;
             // primary keyを設定して、重複を防ぐ
@@ -23,10 +23,37 @@
         }
 
         function buttonGoPressed() {
-            var name = document.getElementById('tf1').value;
-            sessionStorage.setItem('name', name);
-            location.href = 'ex6-2-to.html';
+            var room = document.getElementById("RoomList").value;
+            sessionStorage.setItem('room', room);
+            location.href = 'waiting.html';
         }
+
+        function buttonpressed() {
+            var name = document.getElementById("roomname").value;
+            CreateGame(name);
+            location.href = 'gametop.html';
+        }
+
+        async function CreateGame(roomname) {
+            var sql = `insert ignore into Game (turn, playernum) VALUES (0, 0)`;
+            await osql.connect(sql);
+            var sql = `select * from Game (turn, playernum) VALUES (0, 0)`;
+            await osql.connect(sql);
+            addOption(roomname)
+        }
+
+        function addOption(roomname) {
+                // selectタグを取得する
+                var select = document.getElementById("RoomList");
+                // optionタグを作成する
+                var option = document.createElement("option");
+                // optionタグのテキストを4に設定する
+                option.text = roomname;
+                // optionタグのvalueを4に設定する
+                option.value = roomname;
+                // selectタグの子要素にoptionタグを追加する
+                select.appendChild(option);
+            }
     </script>
 
 </head>
@@ -42,17 +69,18 @@
         <p id="result"></p>
         <select name="rooms" size="4" id="RoomList">
             <option value="room1">Room1</option>
-            <option value="room2">Room2</option>
-            <option value="room3">Room3</option>
-            <option value="room4">Room4</option>
         </select>
         <button id="goToRoom" onclick="buttonGoPressed()">Go!</button>
-        <ul>
-            <ol><a href="waiting.html">ゲーム1:参加する</a></ol> 
-            <!-- sessionとかでゲーム番号所得したい？ -->
-            <!-- <ol><a href="waiting.html">ゲーム2:参加する</a></ol> -->
-        </ul>
-        
+        <!-- <ul>
+            <ol><a href="waiting.html">ゲーム1:参加する</a></ol>
+            <ol><a href="waiting.html">ゲーム2:参加する</a></ol>
+        </ul> -->
+        <br>
+        <hr>
+        <br>
+        <input id="roomname" value="" type="text">
+        <button id="a" onclick="buttonpressed()">作成</button>
+
     </div>
 </body>
 
