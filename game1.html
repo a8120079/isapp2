@@ -78,14 +78,15 @@
             await osql.connect(sqlLeaveStuff1);
             sqlLeaveStuff2 = `delete from Items where gameid = 1;`
             await osql.connect(sqlLeaveStuff2);
-            // sqlLeaveStuff3 = `delete from Items where gameid = 1;`
-            // await osql.connect(sqlLeaveStuff3);
+            sqlLeaveStuff3 = `alter table Items auto_increment = 1;`
+            await osql.connect(sqlLeaveStuff3);
             sqlLeaveStuff4 = `alter table Gameplayer auto_increment = 1;`
             await osql.connect(sqlLeaveStuff4);
             sqlLeaveStuff5 = `update Game set playernum = 0 where id = 1;`
             await osql.connect(sqlLeaveStuff5);
             sqlLeaveStuff6 = `update Game set turn = 0 where id = 1;`
             await osql.connect(sqlLeaveStuff6);
+            location.href = 'gametop.html';
         }
 
 
