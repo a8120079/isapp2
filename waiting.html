@@ -10,30 +10,28 @@
 
     <script>
         osql.requireLogin();
+        var gameid = osql.getParam('id');
 
         $().ready(function () {
-            init();
+            
             participate();
             setInterval(showParticipants, 2000);
         });
 
-        function init(){
-            var id = osql.getParam('game');
-        }
+        
 
         async function participate() {
             var me = await osql.getMe();
-            var sql = `insert ignore into Gameplayer (playerid, gameid) VALUES ('${me.id}', ${id})`;// Gameid = session.
+            var sql = `insert ignore into Gameplayer (playerid, gameid) VALUES ('${me.id}', ${gameid})`;// Gameid = session.
             await osql.connect(sql);
-            var sql3 = `update Game set playernum = playernum + 1 where id = ${id};`;// where id = session.
+            var sql3 = `update Game set playernum = playernum + 1 where id = ${gameid};`;// where id = session.
             await osql.connect(sql3);
-            var name = sessionStorage.getItem('name');
             //document.getElementById('roomname').innerHTML = name;
         }
         
 
         async function showParticipants() {
-            var sqlre = 'select * from Gameplayer where gameid = ${id}'; //gameid = session
+            var sqlre = `select * from Gameplayer where gameid = ${gameid};`; //gameid = session
             var objects = await osql.connect(sqlre);
             var html = '';
             html = html + '<table border="1">';
@@ -49,7 +47,7 @@
         }
 
         function buttonGoPressed() {
-            location.href = `game1.html?id=${id}`;
+            location.href = `game1.html?id=${gameid}`;
         }
     </script>
 

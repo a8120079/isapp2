@@ -12,16 +12,12 @@
         // alter table Gameplayer auto_increment = 1; AIの初期化
 
         osql.requireLogin();
-
+        var id = osql.getParam('id');
 
         $().ready(function () {
             init();
             setInterval(moveOn, 2000);
         });
-
-        function init(){
-            var id = osql.getParam('id');
-        }
 
         async function moveOn() {
             var me = await osql.getMe();
