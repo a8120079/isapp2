@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+
+    <script>
+        osql.requireLogin();
+
+        function buttonPressed() {
+            
+            var name = document.getElementById("roomname").value;
+            CreateGame(name);
+        }
+
+        async function CreateGame(roomname){
+            var me = await osql.getMe();
+        
+            var sql = `insert ignore into Game (turn, playernum) VALUES (0, 0)`;
+            // primary keyを設定して、重複を防ぐ
+            await osql.connect(sql);
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>山手線ゲーム</h1>
+    <div>
+        <!-- <h2>ネーム、テーマ作成</h2>
+            name(4to8characters):<input id="name" value="" type="text" equired
+            minlength="4" maxlength="8" size="10"><br>
+        </form>
+        <br> -->
+        <p id="result"></p>
+        <input id="roomname" value="" type="text">
+        <button id="a" onclick="buttonpressed()"></button>
+        <ul>
+            <ol><a href="waiting.html">ゲーム1:参加する</a></ol> 
+            <!-- sessionとかでゲーム番号所得したい？ -->
+            <!-- <ol><a href="waiting.html">ゲーム2:参加する</a></ol> -->
+        </ul>
+        
+    </div>
+</body>
+
+</html>
