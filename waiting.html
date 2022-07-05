@@ -13,7 +13,6 @@
         var gameid = osql.getParam('id');
 
         $().ready(function () {
-            
             participate();
             setInterval(showParticipants, 2000);
         });
@@ -22,16 +21,16 @@
 
         async function participate() {
             var me = await osql.getMe();
-            var sql = `insert ignore into Gameplayer (playerid, gameid) VALUES ('${me.id}', ${gameid})`;// Gameid = session.
+            var sql = `insert ignore into Gameplayer (playerid, gameid) VALUES ('${me.id}', 1)`;// Gameid = session.
             await osql.connect(sql);
-            var sql3 = `update Game set playernum = playernum + 1 where id = ${gameid};`;// where id = session.
+            var sql3 = `update Game set playernum = playernum + 1 where id = 1;`;// where id = session.
             await osql.connect(sql3);
             //document.getElementById('roomname').innerHTML = name;
         }
         
 
         async function showParticipants() {
-            var sqlre = `select * from Gameplayer where gameid = ${gameid};`; //gameid = session
+            var sqlre = `select * from Gameplayer where gameid = 1;`; //gameid = session
             var objects = await osql.connect(sqlre);
             var html = '';
             html = html + '<table border="1">';

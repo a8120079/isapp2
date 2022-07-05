@@ -14,7 +14,7 @@
         $().ready(function () {
             LoginGame();
             showGames();
-            setInterval(showGames, 2000);
+            setInterval(showGames, 8000);
         });
 
         async function showGames(){
@@ -51,10 +51,7 @@
         }
 
         function addOption(name, id) {
-                // selectタグを取得する
                 var Select = document.getElementById("RoomList");
-                // var length = Select.length;
-                // optionタグを作成する
                 var option = document.createElement("option");
                 // optionタグのテキストを4に設定する
                 option.text = name;
